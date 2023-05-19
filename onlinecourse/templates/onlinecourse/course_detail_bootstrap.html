@@ -51,26 +51,23 @@
             {% endfor %}
         </div>
 
-        <!-- Task: show questions and choices -->
-        <!-- <HINT> Use Bootstrap Collapse to hide exam first, more details could be found here
-        https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
+        
         <div id="exam" class="collapse">
-            <!-- <HINT> If user is authenticated, show course exam with a list of question -->
+            
             {% if user.is_authenticated %}
             <form id="questionform" action="{% url 'exam-submit' %}" method="post">
                 {% csrf_token %}
-                <!-- <HINT> Each example will have many questions -->
+              
                 {% for question in course.questions.all %}
                 <div class="card mt-1">
                     <div class="card-header"><h5>{{ question.question_text }}</h5></div>
                     <div class="card-body">
                         {% csrf_token %}
-                        <!-- <HINT> Each question will have many choices -->
+                      
                         {% for choice in question.choices.all %}
                         <div class="form-group">
                             <div class="form-check">
-                                <!-- <HINT> For each question choice, you may create a checkbox input like
-                                <input type="check" name="choice_{{choice.id}}" id="{{choice.id}}" ...> -->
+                               
                                 <input type="checkbox" name="choice_{{ choice.id }}" id="{{ choice.id }}"
                                        class="form-check-input" value="{{ choice.id }}">
                                 <label class="form-check-label" for="{{ choice.id }}">{{ choice.choice_text }}</label>
@@ -90,8 +87,7 @@
             Expand Exam
         </button>
 
-        <!--Check here to see more details Bootstrap checkbox
-        https://www.w3schools.com/bootstrap4/bootstrap_forms_inputs.asp-->
+        
     </div>
 </body>
 </html>
