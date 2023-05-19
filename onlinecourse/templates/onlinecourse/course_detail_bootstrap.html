@@ -28,7 +28,7 @@
                         {% csrf_token %}
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Username" name="username" >
-                            <input type="password" class="form-control" placeholder="Username" name="psw" >
+                            <input type="password" class="form-control" placeholder="Password" name="psw" >
                             <button class="btn btn-primary" type="submit">Login</button>
                             <a class="btn btn-link" href="{% url 'onlinecourse:registration' %}">Sign Up</a>
                         </div>
@@ -51,43 +51,37 @@
             {% endfor %}
         </div>
 
-        
+        <!-- Exam section -->
         <div id="exam" class="collapse">
-            
             {% if user.is_authenticated %}
-            <form id="questionform" action="{% url 'exam-submit' %}" method="post">
+            <form id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
                 {% csrf_token %}
-              
-                {% for question in course.questions.all %}
+                {% for question in course.question_set.all %}
                 <div class="card mt-1">
-                    <div class="card-header"><h5>{{ question.question_text }}</h5></div>
+                    <div class="card-header">
+                        <h5>{{ question.question_text }}</h5>
+                    </div>
                     <div class="card-body">
-                        {% csrf_token %}
-                      
-                        {% for choice in question.choices.all %}
-                        <div class="form-group">
-                            <div class="form-check">
-                               
-                                <input type="checkbox" name="choice_{{ choice.id }}" id="{{ choice.id }}"
-                                       class="form-check-input" value="{{ choice.id }}">
-                                <label class="form-check-label" for="{{ choice.id }}">{{ choice.choice_text }}</label>
-                            </div>
+                        {% for choice in question.choice_set.all %}
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="choice_{{ choice.id }}" id="choice_{{ choice.id }}" value="{{ choice.id }}">
+                            <label class="form-check-label" for="choice_{{ choice.id }}">{{ choice.choice_text }}</label>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
                 {% endfor %}
-                <input class="btn btn-success btn-block" type="submit" value="Submit">
+                <input type="submit" class="btn btn-success btn-block" value="Submit">
             </form>
             {% endif %}
         </div>
 
-        <!-- A collapse example here -->
+        <!-- Expand Exam button -->
+        {% if user.is_authenticated %}
         <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#exam">
             Expand Exam
         </button>
-
-        
+        {% endif %}
     </div>
 </body>
 </html>
