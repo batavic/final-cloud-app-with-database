@@ -146,7 +146,7 @@ def show_exam_result(request, course_id, submission_id):
     for choice_id in selected_choice_ids:
         choice = Choice.objects.get(pk=choice_id)
         if choice.is_correct:
-            total_score += choice.question.points
+            total_score += choice.question.grade
 
     context = {
         'course': course,
