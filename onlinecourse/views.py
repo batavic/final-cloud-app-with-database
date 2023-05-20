@@ -138,24 +138,32 @@ def show_exam_result(request, course_id, submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
 
-    # Get the selected choice ids from the submission record
-    selected_choice_ids = submission.choices.values_list('id', flat=True)
-
-    # For each selected choice, check if it is a correct answer or not
-    total_score = 0
-    for choice_id in selected_choice_ids:
-        choice = Choice.objects.get(pk=choice_id)
-        if choice.is_correct:
-            total_score += choice.question.grade
+    # Get the selected choices from the submission record
+    selected_choices = submission.choices.all()
 
     # Retrieve the questions for the course
     questions = Question.objects.filter(lesson__course=course)
+
+    # Create a dictionary to store the correct choices for each question
+    correct_choices = {}
+
+    # Iterate over the questions and find the correct choice for each question
+    for question in questions:
+        correct_choice = Choice.objects.filter(question=question, is_correct=True).first()
+        correct_choices[question.id] = correct_choice
+
+    # For each selected choice, check if it is a correct answer or not
+    total_score = 0
+    for choice in selected_choices:
+        if choice.is_correct:
+            total_score += choice.question.grade
 
     context = {
         'course': course,
         'submission': submission,
         'total_score': total_score,
-        'questions': questions 
+        'questions': questions,
+        'selected_choices': selected_choices,
+        'correct_choices': correct_choices,
     }
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
-
