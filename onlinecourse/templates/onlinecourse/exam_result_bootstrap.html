@@ -64,9 +64,9 @@
                 {% for choice in question.choice_set.all %}
                     {% if choice in selected_choices %}
                         {% if choice.is_correct %}
-                            <span>Your Answer: {{ choice.choice_text }}</span>
+                            <span> {{ choice.choice_text }}</span>
                         {% else %}
-                            <span>Your Answer: {{ choice.choice_text }}</span>
+                            <span> {{ choice.choice_text }}</span>
                         {% endif %}
                     {% endif %}
                 {% endfor %}
