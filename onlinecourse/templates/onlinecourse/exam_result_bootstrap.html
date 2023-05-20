@@ -38,11 +38,11 @@
 <div class="container-fluid">
     {% if total_score >= 80 %}
     <div class="alert alert-success">
-        Congratulations {{ user.username }}, you have passed the exam with a score of: {{ total_score }}
+        Congratulations {{ user.username }}, you have passed the exam with a score of: {{ total_score }}/100
     </div>
     {% else %}
     <div class="alert alert-danger">
-        Sorry {{ user.username }}, you have failed the exam with a score of: {{ total_score }}
+        Sorry {{ user.username }}, you have failed the exam with a score of: {{ total_score }}/100
     </div>
     <a class="btn btn-link text-danger" href="{% url 'onlinecourse:course_details' course.id %}">Re-take Exam</a>
     {% endif %}
@@ -55,23 +55,26 @@
                 <h6>{{ question.question_text }}</h6>
             </div>
             <div class="card-body">
-                    {% for choice in question.choice_set.all %}
-                        {% if choice in selected_choices %}
-                            {% if choice.is_correct %}
-                                <span class="text-success">Your Answer: {{ choice.choice_text }}</span>
-                            {% else %}
-                                <span class="text-danger">Your Answer: {{ choice.choice_text }}</span>
-                            {% endif %}
-                            {% endif %}
-                            {% if choice.is_correct %}
-                            <br>
-                                <span class="text-success">Correct Answer:{{ choice.choice_text}} </span>
-                            {% endif %}
-                    {% endfor %}
+                {% for choice in question.choice_set.all %}
+                    {% if choice.is_correct %}
+                        <span class="text-success">Correct Answer: {{ choice.choice_text }}</span>
+                    {% endif %}
+                {% endfor %}
+                <br>
+                {% for choice in question.choice_set.all %}
+                    {% if choice in selected_choices %}
+                        {% if choice.is_correct %}
+                            <span>Your Answer: {{ choice.choice_text }}</span>
+                        {% else %}
+                            <span>Your Answer: {{ choice.choice_text }}</span>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
         {% endfor %}
     </div>
+    
 </div>
 
 </body>
