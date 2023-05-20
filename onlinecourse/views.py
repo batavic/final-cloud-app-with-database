@@ -148,9 +148,14 @@ def show_exam_result(request, course_id, submission_id):
         if choice.is_correct:
             total_score += choice.question.grade
 
+    # Retrieve the questions for the course
+    questions = Question.objects.filter(lesson__course=course)
+
     context = {
         'course': course,
         'submission': submission,
-        'total_score': total_score
+        'total_score': total_score,
+        'questions': questions 
     }
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
+
