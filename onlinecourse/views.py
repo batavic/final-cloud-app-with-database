@@ -161,7 +161,7 @@ def show_exam_result(request, course_id, submission_id):
     context = {
         'course': course,
         'submission': submission,
-        'total_score': total_score,
+        'total_score': int(total_score),
         'questions': questions,
         'selected_choices': selected_choices,
         'correct_choices': correct_choices,
