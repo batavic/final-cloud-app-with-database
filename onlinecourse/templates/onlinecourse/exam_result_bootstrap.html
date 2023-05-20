@@ -55,17 +55,19 @@
                 <h6>{{ question.question_text }}</h6>
             </div>
             <div class="card-body">
-                {% for choice in selected_choices %}
-                    {% if choice.question == question %}
-                        {% if choice.is_correct %}
-                            <span class="text-success">Your Answer: {{ choice.choice_text }}</span>
-                        {% else %}
-                            <span class="text-danger">Your Answer: {{ choice.choice_text }}</span>
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-                <br>
-                <span class="text-success">Correct Answer: {{ question.correct_choice.choice_text }}</span>
+                    {% for choice in question.choice_set.all %}
+                        {% if choice in selected_choices %}
+                            {% if choice.is_correct %}
+                                <span class="text-success">Your Answer: {{ choice.choice_text }}</span>
+                            {% else %}
+                                <span class="text-danger">Your Answer: {{ choice.choice_text }}</span>
+                            {% endif %}
+                            {% endif %}
+                            {% if choice.is_correct %}
+                            <br>
+                                <span class="text-success">Correct Answer:{{ choice.choice_text}} </span>
+                            {% endif %}
+                    {% endfor %}
             </div>
         </div>
         {% endfor %}
